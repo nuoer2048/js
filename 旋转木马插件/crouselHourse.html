@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/crouselHourse.css">
+</head>
+<body style="padding: 50px">
+<div class="J_Poster poster-main">
+   <div class="poster-btn poster-prev-btn">
+
+   </div>
+    <ul class="poster-list" data-setting='{
+
+    "width":800,
+     "height":270,
+   "posterWidth":640,
+    "posterHeight":270,
+    "scale":0.9,
+    "speed":500,
+    "verticalAlign":"middle"
+    }'>
+        <li class="poster-item"><a href="#"><img src="img/1.jpg" alt=""></a></li>
+        <li class="poster-item"><a href="#"><img src="img/15.jpg"alt=""></a></li>
+        <li class="poster-item"><a href="#"><img src="img/16.jpg"  alt=""></a></li>
+        <li class="poster-item"><a href="#"><img src="img/13.jpg" alt=""></a></li>
+        <li class="poster-item"><a href="#"><img src="img/14.jpg" alt=""></a></li>
+    </ul>
+
+    <div class="poster-btn poster-next-btn">
+
+    </div>
+</div>
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/Carousel.js"></script>
+<script type="text/javascript">
+var setting={
+
+
+};
+    $(function () {
+       Carousel.init($('.J_Poster'));
+    });
+
+</script>
+</body>
+</html>

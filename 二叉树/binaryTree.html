@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>排序二叉树</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		#stage{
+			width: 300px;
+			height: 300px;
+			position: relative;
+
+		}
+		#background{
+			width: 300px;
+			height: 300px;
+			position: absolute;
+			left: 0;
+			top:0;
+			background-image: url('./images/background-image.jpg') ;
+			background-size: 100% 100%;
+		}
+		#cannon{
+			width: 20px;
+			height: 20px;
+			position: absolute;
+			top:270px;
+			left: 150px;
+			background-image: url('./images/cannon.jpg') ;
+				background-size: 100% 100%;
+		}
+		#alien{
+			width: 20px;
+			height: 20px;
+			position: absolute;
+			top:50px;
+			left: 40px;
+			background-image: url('./images/alien.jpg') ;
+				background-size: 100% 100%;
+		}
+		#missile{
+			width: 10px;
+			height: 10px;
+			position: absolute;
+			top:270px;
+			left: 150px;
+			background-image: url('./images/func.jpg');
+				background-size: 100% 100%;
+				
+		}
+		#explosion{
+			width: 20px;
+			height: 20px;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			background-image:  url('./images/boom.jpg') ;
+				background-size: 100% 100%;
+			display: none;
+		}
+	</style>
+</head>
+<body>
+
+     <div id="stage">
+     	<div id="background">
+     		
+     	</div>
+     	<div id="cannon"></div>
+   <div id="missile"></div>
+   <div id="alien"></div>
+   <div id="explosion"></div>
+
+     </div><!--  <div id="stage"> -->
+     	<p id="output">请输入x y（0-300） 坐标 然后点击fire</p>
+              <input id="inputX" type="text" placeholder="X"></input>
+                   <input id="inputY" type="text" placeholder="Y"></input>
+                   <input type="button" name="" id='fire'value="点击">
+
+	<script type="text/javascript">
+			function BinaryTree(argument) {
+		 	// body...
+		 	var Node=function (key) {
+		 		// body...
+		 		this.key=key;
+		 		this.left=null;
+		 		this.right=null;
+		 		this.selected=false;
+
+		 	}
+		 	var root=null;
+		 	var insertNode=function(node,newNode)
+		 	{
+		 		if(newNode.key < node.key)
+		 		{
+		 			if(node.left===null)
+		 			{
+		 				node.left=newNode
+		 			}else
+		 			{
+		 				insertNode(node.left,newNode);
+		 			}
+		 		}
+		 		else{
+		 			if(node.right===null)
+		 			{
+		 				node.right=newNode;
+		 			}
+		 			else{
+		 				insertNode(node.right,newNode);
+		 			}
+		 		}
+
+		 	}
+
+		 	this.insert=function (key) {
+		 		// body...
+		 		var newNode = new Node(key);
+		 		if(root==null)
+		 		{
+		 			root=newNode;
+		 		}
+		 		else{
+
+		 			insertNode(root,newNode);
+		 		}
+
+		 	};
+		 	var inOrderTraserNode=function(node,callback)
+		 	{
+                  if(node!==null)
+                  {
+                  	inOrderTraserNode(node.left,callback);
+                  	callback(node.key);
+                  	inOrderTraserNode(node.right,callback);
+                  }
+		 	}
+		 	var  prevOrderTraverseNode=function(node,callback)
+		 	{
+		 		if(node!==null)
+		 		{
+		 			callback(node);
+		 			prevOrderTraverseNode(node.left,callback);
+		 			prevOrderTraverseNode(node.right,callback);
+		 		}
+
+		 	};
+		 	var postOrderTraverseNode=function(node,callback)
+		 	{
+		 		if(node!==null)
+		 		{
+		 			postOrderTraverseNode(node.left,callback);
+		 			postOrderTraverseNode(node.right,callback);
+		 			callback(node.key);
+		 		}
+
+		 	}
+		 	this.inOrderTraser=function(callback)
+		 	{
+		 		inOrderTraserNode(root,callback);
+
+
+		 	};
+		 	function minNode(node)
+		 	{
+		 		if(node!==null)
+		 		{
+		 			while(node &&node.left!==null)
+		 			{
+                       node=node.left;
+		 			}
+		 			return node;
+
+		 		}
+		 		return null;
+
+		 	}
+		 	function maxNode(node)
+		 	{
+		 		if(node!==null)
+		 		{
+
+		 			while(node&&node.left!=null)
+		 			{
+		 				node=node.left;
+		 			}
+		 			return node;
+		 		}
+		 		return null;
+
+		 	}
+		 	function findKeyNode(node,key)
+		 	{
+              
+              if(node!==null)
+              {
+              	if(node.key===key)
+              	{
+              		return node;
+              	}
+              	else{
+              		if(node.key>key)
+              		{
+              			return findKeyNode(node.left,key);
+              		}
+              		else{
+              			return findKeyNode(node.right,key);
+              		}
+
+              	}
+
+              }
+              return null;
+        
+		 	}
+		 	var findMinNode=function(node)
+		 	{
+              if(node!==null)
+              {
+            while(node&&node.left!==null)
+            {
+            	node=node.left;
+
+            }
+            return node;
+              }
+              return null;
+		 	}
+		 var removeNode=function(node,key)
+		 {
+		 	if(node!==null)
+		 	{
+		 		if(node.key>key)
+		 		{
+		 			node.left=removeNode(node.left,key);
+		 			return node;
+		 		}
+		 		else if(node.key < key)
+		 		{
+		 			node.right=removeNode(node.right,key);
+		 			return node;
+		 		}
+		 		else{
+		 			if(node.left===null&&node.right===null)
+		 			{
+		 				node=null;
+		 				return node;
+		 			}
+		 			if(node.left===null)
+		 			{
+		 				node=node.right;
+		 				return node;
+		 			}
+		 			else if(node.right===null)
+		 			{
+		 				node=node.left;
+		 				return node;
+
+		 			}
+
+		 			var aux=findMinNode(node.right);
+		 			node.key=aux.key;
+		 			node.right=removeNode(node.right,aux.key);
+		 			return node
+
+		 		}
+
+		 	}
+		 	return null;
+
+		 }
+		 	this.prevOrderTraverse=function(callback)
+		 	{
+                     prevOrderTraverseNode(root,callback);
+		 	}
+		 	this.postOrderTraverse=function(callback)
+		 	{
+
+             postOrderTraverseNode(root,callback);
+		 	};
+		 	this.min=function()
+		 	{
+		 		return minNode(root)
+		 	}
+
+		    this.max=function()
+		     {
+		          	return maxNode(root);
+		     }
+		     this.findKey=function(key)
+		     {
+                   return findKeyNode(root,key);
+		     }
+		     this.remove=function(key)
+		     {
+               root=removeNode(root,key);
+		     }
+		 } 
+
+
+		 var nodes=[80,35,100,150,65,140,40,70,130];
+		 var binaryTree=new BinaryTree();
+		 nodes.forEach(function(key)
+		 	{
+		 		binaryTree.insert(key)
+
+		 	});
+		
+		var nodesForAlien=[];
+		var callback=function(node)
+		{
+   nodesForAlien.push(node);
+		}
+    binaryTree.prevOrderTraverse(callback);
+
+    var alienNodeSelect=Math.floor(Math.random()*9);
+
+nodesForAlien[alienNodeSelect].selected=true;
+    var alienX=nodesForAlien[alienNodeSelect].key;
+   
+
+		var alienY=40;
+		var guessX=0;
+		var guessY=0;
+		 var shotRemaning=8;
+		 var shotsMade=0;
+		 var gameState='';
+		 var gameWon=false;
+
+		 var cannon = document.querySelector('#cannon');
+		 var alien =document.querySelector('#alien');
+		 var missile = document.querySelector('#missile');
+		 var explosion =document.querySelector('#explosion');
+
+		 var inputX = document.querySelector('#inputX');
+		 var inputY = document.querySelector('#inputY');
+		 var output=document.querySelector('#output');
+
+
+		 var button = document.querySelector('#fire');
+
+		 button.style.cursor='pointer';
+		 button.addEventListener('click',clickHandler,false);
+		 window.addEventListener('keydown',keydownHandler,false);
+
+function keydownHandler(e)
+{
+  var e=e||window.event;
+	if(e.keyCode===13)
+	{
+	validateInput();}
+}
+function clickHandler()
+{
+	validateInput();
+	
+}
+function validateInput()
+{
+	guessX =parseInt( inputX.value);
+	guessY=parseInt(inputY.value);
+
+	if(isNaN(guessX)||isNaN(guessX))
+	{
+		output.innerHTML="请输入合法坐标值";
+	}
+	else if( guessX >300||guessY>300)
+	{
+
+output.innerHTML="0-300"
+	}
+	else{
+		playGame();
+	}
+
+}
+
+function playGame()
+{
+	shotRemaning=shotRemaning-1;
+	gameState="炮弹："+",数量"+shotRemaning;
+	guessY=parseInt(inputY.value);
+	guessX=parseInt(inputX.value);
+
+     var alienNode=binaryTree.findKey(guessX);
+     if(alienNode!=null&&alienNode.selected===true)
+     {
+     	if(guessY>=alienY&&guessY <alienY+20)
+     	{
+     		gameWon=true;
+
+     		endGame();
+     	}
+     }
+     else{
+     	output.innerHtml='炮弹没有击中';
+     	if(shotRemaning <1)
+     	{
+     		endGame();
+
+     	}
+     }
+
+     if(!gameWon)
+     {
+     	nodesForAlien[alienNodeSelect].selected=false;
+     	alienNodeSelect=Math.floor(Math.random()*9);
+     	nodesForAlien[alienNodeSelect].selected=true;
+     	alienX=nodesForAlien[alienNodeSelect].key;
+
+     	alienY+=30;
+
+
+     }
+     render();//重新绘制整个页面
+     console.log(alienX+":"+alienY)
+}
+function render()
+{  
+	alien.style.left=alienX+'px';
+	alien.style.top=alienY+'px';
+	cannon.style.left=guessX+'px';
+	missile.style.left=guessX+'px';
+	missile.style.top=guessY+'px';
+	if(gameWon)
+	{
+		explosion.style.display="block";
+		explosion.style.left=alienX+'px';
+		explosion.style.top=alienY+'px';
+		alien.style.display='none';
+		missile.style.display='none';
+
+	}
+}
+function endGame()
+{
+	if(gameWon)
+	{
+		output.innerHTML="闯关成功"
+	}
+	else{
+		output.innerHTML="抱歉？再接再厉吧"
+	}
+	button.removeEventListener('click',clickHandler)//取消绑定事件
+	window.removeEventListener('keydown',keydownHandler);
+	inputY.disabled=true;
+	inputX.disabled=true;
+}
+
+	
+	
+	</script>
+
+</body>
+</html>
